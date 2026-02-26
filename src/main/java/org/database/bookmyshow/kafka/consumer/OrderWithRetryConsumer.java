@@ -1,6 +1,6 @@
 package org.database.bookmyshow.kafka.consumer;
 
-import org.database.bookmyshow.kafka.entitiy.Order;
+import org.database.bookmyshow.kafka.entitiy.Orders;
 import org.database.bookmyshow.kafka.event.OrderPlacedEvent;
 import org.database.bookmyshow.kafka.reposiotry.OrderRepository;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import tools.jackson.databind.ObjectMapper;
 import static org.database.bookmyshow.kafka.producer.OrderEventProducer.TOPIC_NAME;
 
 /**
- * Consumer component responsible for processing Order Placed events from Kafka.
+ * Consumer component responsible for processing Orders Placed events from Kafka.
  * Implements a non-blocking retry mechanism using Spring Kafka's @RetryableTopic.
  */
 @Component
@@ -72,18 +72,18 @@ public class OrderWithRetryConsumer {
 
         try {
             OrderPlacedEvent orderEvent = objectMapper.readValue(event, OrderPlacedEvent.class);
-            log.info("Received OrderPlacedEvent: order Event {}", orderEvent);
-            log.info("Received OrderPlacedEvent: order Event total amount : {} , price {} ", orderEvent.totalAmount() , orderEvent.quantity());
+            log.info("Received OrderPlacedEvent: orders Event {}", orderEvent);
+            log.info("Received OrderPlacedEvent: orders Event total amount : {} , price {} ", orderEvent.totalAmount() , orderEvent.quantity());
             validateOrder(orderEvent);
 
-            Order order = new Order();
-            order.setCustomerId(orderEvent.customerId());
-            order.setProductId(orderEvent.productId());
-            order.setQuantity(orderEvent.quantity());
-            order.setTotalAmount(orderEvent.totalAmount());
-            order.setOrderDate(orderEvent.orderDate().toString());
+            Orders orders = new Orders();
+            orders.setCustomerId(orderEvent.customerId());
+            orders.setProductId(orderEvent.productId());
+            orders.setQuantity(orderEvent.quantity());
+            orders.setTotalAmount(orderEvent.totalAmount());
+            orders.setOrderDate(orderEvent.orderDate().toString());
 
-//            orderRepository.save(order);
+//            orderRepository.save(orders);
 
             processOrder(orderEvent);
         } catch (Exception e) {
@@ -98,14 +98,14 @@ public class OrderWithRetryConsumer {
     }
 
     /**
-     * Performs basic business validation on the incoming Order event.
+     * Performs basic business validation on the incoming Orders event.
      *
      * @param event The order event to validate.
      * @throws IllegalArgumentException if validation constraints are violated.
      */
     private void validateOrder(OrderPlacedEvent event) {
         if (event.orderId() == null || event.orderId().isBlank()) {
-            throw new IllegalArgumentException("Order ID cannot be null or empty");
+            throw new IllegalArgumentException("Orders ID cannot be null or empty");
         }
         if (event.quantity() != null && event.quantity() <= 0) {
             throw new IllegalArgumentException("Quantity must be positive");
@@ -129,6 +129,6 @@ public class OrderWithRetryConsumer {
                 event.totalAmount());
 
         // Placeholder for additional business logic (e.g., inventory update, notification)
-        log.info("Order {} processed successfully", event.orderId());
+        log.info("Orders {} processed successfully", event.orderId());
     }
 }

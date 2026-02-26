@@ -36,7 +36,7 @@ public class OrderController {
 
         orderEventProducer.sendOrderPlaceEvent(event);
 
-        return ResponseEntity.ok("Order placed successfully with ID: " + orderId);
+        return ResponseEntity.ok("Orders placed successfully with ID: " + orderId);
     }
 
 }

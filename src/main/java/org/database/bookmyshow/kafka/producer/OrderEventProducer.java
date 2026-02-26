@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class OrderEventProducer {
     private static final Logger log = LoggerFactory.getLogger(OrderEventProducer.class);
-    public static final String TOPIC_NAME = "Order";
+    public static final String TOPIC_NAME = "order-topic";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -30,7 +30,7 @@ public class OrderEventProducer {
 
     public void sendOrderPlaceEvent(OrderPlacedEvent event) {
         log.info("Sending order placed event to topic: {}", TOPIC_NAME);
-        log.info("Order placed event sent: {}", event);
+        log.info("Orders placed event sent: {}", event);
         // Send message asynchronously
 
         String eventToString = objectMapper.writeValueAsString(event);

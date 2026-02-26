@@ -27,7 +27,7 @@ public class OrderDeadLetterConsumer {
             @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stackTrace
     ){
         log.error("=== DEAD LETTER MESSAGE RECEIVED ===");
-        log.error("Order ID: {}", event != null ? event : "NULL");
+        log.error("Orders ID: {}", event != null ? event : "NULL");
         log.error("Key: , Partition: {}, Offset: {}", partition, offset);
         log.error("Exception: {}", exceptionMessage);
         log.error("Stack Trace: {}", stackTrace);

@@ -41,7 +41,7 @@ public class OrderConsumer {
 
 
         // Additional business logic here
-        log.info("Order {} processed successfully", event);
+        log.info("Orders {} processed successfully", event);
         // Here you would typically:
         // 1. Validate the order
         // 2. Update inventory
@@ -49,7 +49,7 @@ public class OrderConsumer {
         // 4. Update database
         // 5. Trigger other business logic
 
-        log.info("Order {} processed successfully", event);
+        log.info("Orders {} processed successfully", event);
     }
 
 

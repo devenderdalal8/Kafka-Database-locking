@@ -18,18 +18,13 @@ import static org.database.bookmyshow.kafka.producer.OrderEventProducer.TOPIC_NA
 public class OrderConsumer {
     public static final Logger log = LoggerFactory.getLogger(OrderConsumer.class);
 
-
-    @Value("${spring.kafka.consumer.group-id}")
-    private String groupId;
-
-    @KafkaListener(topics = TOPIC_NAME, groupId = "order-group")
-    public void consumerOrderPlacedEvent(@Payload String event, @Header(KafkaHeaders.RECEIVED_PARTITION) int partition, @Header(KafkaHeaders.OFFSET) long offset, Acknowledgment acknowledgment) {
+//    @KafkaListener(topics = TOPIC_NAME, groupId = "order-group")
+    public void consumerOrderPlacedEvent(@Payload String event, @Header(KafkaHeaders.RECEIVED_PARTITION) int partition, @Header(KafkaHeaders.OFFSET) long offset) {
         log.info("Received OrderPlacedEvent: {}", event);
         log.info("Partition: {}, Offset: {}", partition, offset);
 
         processOrder(event);
 
-        acknowledgment.acknowledge();
     }
 
     private void processOrder(String event) {

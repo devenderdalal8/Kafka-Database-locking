@@ -8,8 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
-
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class OrderEventProducer {
     private static final Logger log = LoggerFactory.getLogger(OrderEventProducer.class);
-    public static final String TOPIC_NAME = "order-topic";
+    public static final String TOPIC_NAME = "orders-t";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -28,6 +28,7 @@ public class OrderEventProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
+    @Transactional
     public void sendOrderPlaceEvent(OrderPlacedEvent event) {
         log.info("Sending order placed event to topic: {}", TOPIC_NAME);
         log.info("Orders placed event sent: {}", event);
@@ -57,7 +58,7 @@ public class OrderEventProducer {
 
         for (OrderPlacedEvent event : events) {
             CompletableFuture<SendResult<String, String>> future =
-                    kafkaTemplate.send("orders", event.orderId(), event.toString());
+                    kafkaTemplate.send("orders", event.orderId().toString(), event.toString());
             futures.add(future);
         }
 

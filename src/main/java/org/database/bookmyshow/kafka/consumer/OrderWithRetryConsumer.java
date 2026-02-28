@@ -64,8 +64,8 @@ public class OrderWithRetryConsumer {
             dltStrategy = DltStrategy.FAIL_ON_ERROR,
             include = {RuntimeException.class}
     )
-    @KafkaListener(topics = TOPIC_NAME, groupId = "order-group")
-    @Transactional
+//    @KafkaListener(topics = TOPIC_NAME, groupId = "order-group")
+//    @Transactional
     public void consumeOrderPlacedEvent(@Payload String event, @Header(KafkaHeaders.RECEIVED_PARTITION) int partition, @Header(KafkaHeaders.OFFSET) long offset) {
         log.info("Received OrderPlacedEvent: {}", event);
         log.info(" Partition: {}, Offset: {}",  partition, offset);

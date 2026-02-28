@@ -3,5 +3,5 @@ package org.database.bookmyshow.kafka.reposiotry;
 import org.database.bookmyshow.kafka.entitiy.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Orders, Long> {
+public interface OrderRepository extends JpaRepository<Orders, String> {
 }

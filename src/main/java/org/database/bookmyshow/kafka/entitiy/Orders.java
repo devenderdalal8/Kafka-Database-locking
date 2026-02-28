@@ -3,6 +3,7 @@ package org.database.bookmyshow.kafka.entitiy;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Long id;
+    String id;
     @Column(name = "customer_id", nullable = false)
     String customerId;
     @Column(name = "product_id", nullable = false)

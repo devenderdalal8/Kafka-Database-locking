@@ -1,17 +1,15 @@
 package org.database.bookmyshow.kafka.consumer;
 
 
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
 
 
 import static org.database.bookmyshow.kafka.producer.OrderEventProducer.TOPIC_NAME;
@@ -25,15 +23,13 @@ public class OrderConsumer {
     private String groupId;
 
     @KafkaListener(topics = TOPIC_NAME, groupId = "order-group")
-    public void consumerOrderPlacedEvent(
-            @Payload String event,
-            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
-            @Header(KafkaHeaders.OFFSET) long offset
-    ) {
+    public void consumerOrderPlacedEvent(@Payload String event, @Header(KafkaHeaders.RECEIVED_PARTITION) int partition, @Header(KafkaHeaders.OFFSET) long offset, Acknowledgment acknowledgment) {
         log.info("Received OrderPlacedEvent: {}", event);
         log.info("Partition: {}, Offset: {}", partition, offset);
 
         processOrder(event);
+
+        acknowledgment.acknowledge();
     }
 
     private void processOrder(String event) {

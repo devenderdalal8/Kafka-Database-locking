@@ -18,8 +18,12 @@ spring:
       retries: 3
       batch-size: 32768
       linger.ms: 50
+#      For transaction idempotence
+      transaction-id-prefix: "tx-"
+      enable.idempotence: true
       properties:
         compression.type: snappy
+
 
     #    New: Retry configuration
     listener:

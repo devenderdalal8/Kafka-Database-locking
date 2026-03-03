@@ -13,8 +13,7 @@ import java.util.UUID;
 @Table(name = "orders")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    String id;
+    String id = UUID.randomUUID().toString();
     @Column(name = "customer_id", nullable = false)
     String customerId;
     @Column(name = "product_id", nullable = false)
@@ -25,4 +24,11 @@ public class Orders {
     BigDecimal totalAmount;
     @Column(name = "order_date", nullable = false)
     String orderDate;
+    public Orders(String customerId, String productId, Integer quantity, BigDecimal totalAmount, String orderDate) {
+        this.customerId = customerId;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.totalAmount = totalAmount;
+        this.orderDate = orderDate;
+    }
 }
